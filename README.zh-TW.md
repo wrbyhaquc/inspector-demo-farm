@@ -42,13 +42,13 @@ python sim/server.py            # http://127.0.0.1:8810/
 
 ## 10 分鐘試用
 
-需要先裝好 [Inspector](https://github.com/wrbyhaquc/inspector)(Runtime 版就夠:不用 PyTorch,也不用訓練模型;要 2026 年 10 月 23 日以後、認得「狀態只用在某些來源」的版本),再加上這個 repo。
+需要先裝好 [Inspector](https://github.com/wrbyhaquc/inspector)(Runtime 版就夠:不用 PyTorch,也不用訓練模型;要 0.2.0 以後的版本),再加上這個 repo。
 
 1. **啟動農場。** `python sim/server.py`,打開 http://127.0.0.1:8810/ 監控室。讓它一直開著。
 2. **啟動 Inspector。** 在 Inspector 資料夾執行 `start.bat`(或 `python -m server`),會打開 http://127.0.0.1:8765。
-3. **安裝方案包。** **方案包 › 安裝或升級**,選 `pack/releases/farm-zh-1.0.1.zip`(英文版是 `farm-1.0.1.zip`),
+3. **安裝方案包。** **方案包 › 安裝或升級**,選 `pack/releases/farm-zh-1.0.2.zip`(英文版是 `farm-1.0.2.zip`),
    並設成執行中的方案包。依提示重新啟動 Inspector(用那一頁的按鈕,或關掉再開)。
-   也可以用指令:在 Inspector 資料夾執行 `python -m project.pack install pack/releases/farm-zh-1.0.1.zip --activate`,再啟動。
+   也可以用指令:在 Inspector 資料夾執行 `python -m project.pack install pack/releases/farm-zh-1.0.2.zip --activate`,再啟動。
 4. **確認攝影機。** **來源** 頁會有「溫室攝影機」和「雞舍攝影機」:方案包已經帶好位址,不用自己輸入。
    模擬器在別台電腦或別的連接埠?在那裡改位址就好。
 5. **開始執行。** **執行 › 開始**。這個方案包沒有訓練好的模型,每個狀態都用畫面規則(顏色、參考圖、溫度計的數字)判斷,所以馬上就能用。
