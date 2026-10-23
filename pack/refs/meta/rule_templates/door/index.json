@@ -1,0 +1,68 @@
+{
+ "1792718463396.png": {
+  "value": "open",
+  "frame": "sim:coop:10.0:door=True",
+  "box": [
+   295,
+   390,
+   150,
+   170
+  ],
+  "created": 1792718463.3988626
+ },
+ "1792718463421.png": {
+  "value": "closed",
+  "frame": "sim:coop:10.0:door=False",
+  "box": [
+   295,
+   390,
+   150,
+   170
+  ],
+  "created": 1792718463.42371
+ },
+ "1792718463445.png": {
+  "value": "open",
+  "frame": "sim:coop:18.2:door=True",
+  "box": [
+   295,
+   390,
+   150,
+   170
+  ],
+  "created": 1792718463.4476717
+ },
+ "1792718463470.png": {
+  "value": "closed",
+  "frame": "sim:coop:18.2:door=False",
+  "box": [
+   295,
+   390,
+   150,
+   170
+  ],
+  "created": 1792718463.4720995
+ },
+ "1792718463500.png": {
+  "value": "open",
+  "frame": "sim:coop:22.0:door=True",
+  "box": [
+   295,
+   390,
+   150,
+   170
+  ],
+  "created": 1792718463.5021315
+ },
+ "1792718463529.png": {
+  "value": "closed",
+  "frame": "sim:coop:22.0:door=False",
+  "box": [
+   295,
+   390,
+   150,
+   170
+  ],
+  "created": 1792718463.531448
+ }
+}

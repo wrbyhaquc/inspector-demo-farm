@@ -1,0 +1,745 @@
+{
+ "states": [
+  {
+   "id": "view_greenhouse",
+   "name": "Greenhouse camera",
+   "type": "class",
+   "description": "Is this the greenhouse camera? Its green / purple name tag in the top left corner. The other camera's states are 'Other camera' (hidden) on this picture.",
+   "rois": [
+    {
+     "id": "tag",
+     "name": "Name tag",
+     "box": [
+      20,
+      18,
+      22,
+      22
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "tag",
+     "colors": [
+      {
+       "h": [
+        85,
+        110
+       ],
+       "s": [
+        150,
+        255
+       ],
+       "v": [
+        150,
+        255
+       ]
+      }
+     ],
+     "high_value": "yes",
+     "high_min": 0.6,
+     "low_value": "hidden",
+     "low_max": 0.1
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "yes",
+     "name": "Yes",
+     "color": "red"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "view_coop",
+   "name": "Hen house camera",
+   "type": "class",
+   "description": "Is this the hen house camera? Its green / purple name tag in the top left corner. The other camera's states are 'Other camera' (hidden) on this picture.",
+   "rois": [
+    {
+     "id": "tag",
+     "name": "Name tag",
+     "box": [
+      20,
+      18,
+      22,
+      22
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "tag",
+     "colors": [
+      {
+       "h": [
+        200,
+        225
+       ],
+       "s": [
+        150,
+        255
+       ],
+       "v": [
+        150,
+        255
+       ]
+      }
+     ],
+     "high_value": "yes",
+     "high_min": 0.6,
+     "low_value": "hidden",
+     "low_max": 0.1
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "yes",
+     "name": "Yes",
+     "color": "red"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "temperature",
+   "name": "Greenhouse temperature",
+   "type": "number",
+   "description": "The red digits on the wall display, in °C.",
+   "rois": [
+    {
+     "id": "display",
+     "name": "Thermometer digits",
+     "box": [
+      520,
+      25,
+      175,
+      72
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "digits",
+    "params": {
+     "roi": "display",
+     "colors": [
+      {
+       "h": [
+        245,
+        10
+       ],
+       "s": [
+        150,
+        255
+       ],
+       "v": [
+        150,
+        255
+       ]
+      }
+     ],
+     "part": "all",
+     "gate_state": "view_greenhouse"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "min": 0,
+   "max": 60,
+   "unit": "°C"
+  },
+  {
+   "id": "vents",
+   "name": "Roof vents",
+   "type": "class",
+   "description": "Open: the glass pane is lifted on its arm and a dark gap shows. Closed: the pane lies flat.",
+   "rois": [
+    {
+     "id": "vent",
+     "name": "Left roof vent",
+     "box": [
+      140,
+      105,
+      430,
+      120
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "template",
+    "params": {
+     "roi": "vent",
+     "search": 3,
+     "match_min": 0.6,
+     "margin": 0.05,
+     "gate_state": "view_greenhouse"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "open",
+     "name": "Open",
+     "color": "sky"
+    },
+    {
+     "value": "closed",
+     "name": "Closed",
+     "color": "stone"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "bed1_dry",
+   "name": "Bed 1 dry",
+   "type": "class",
+   "description": "Pale, dry soil showing between the plants of bed 1.",
+   "rois": [
+    {
+     "id": "soil",
+     "name": "Bed 1 soil",
+     "box": [
+      150,
+      300,
+      290,
+      360
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "soil",
+     "colors": [
+      {
+       "h": [
+        14,
+        32
+       ],
+       "s": [
+        60,
+        150
+       ],
+       "v": [
+        150,
+        255
+       ]
+      }
+     ],
+     "high_value": "dry",
+     "high_min": 0.25,
+     "low_value": "ok",
+     "low_max": 0.1,
+     "gate_state": "view_greenhouse"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "dry",
+     "name": "Dry",
+     "color": "orange"
+    },
+    {
+     "value": "ok",
+     "name": "Fine",
+     "color": "green"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "bed2_dry",
+   "name": "Bed 2 dry",
+   "type": "class",
+   "description": "Pale, dry soil showing between the plants of bed 2.",
+   "rois": [
+    {
+     "id": "soil",
+     "name": "Bed 2 soil",
+     "box": [
+      495,
+      300,
+      290,
+      360
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "soil",
+     "colors": [
+      {
+       "h": [
+        14,
+        32
+       ],
+       "s": [
+        60,
+        150
+       ],
+       "v": [
+        150,
+        255
+       ]
+      }
+     ],
+     "high_value": "dry",
+     "high_min": 0.25,
+     "low_value": "ok",
+     "low_max": 0.1,
+     "gate_state": "view_greenhouse"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "dry",
+     "name": "Dry",
+     "color": "orange"
+    },
+    {
+     "value": "ok",
+     "name": "Fine",
+     "color": "green"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "bed3_dry",
+   "name": "Bed 3 dry",
+   "type": "class",
+   "description": "Pale, dry soil showing between the plants of bed 3.",
+   "rois": [
+    {
+     "id": "soil",
+     "name": "Bed 3 soil",
+     "box": [
+      840,
+      300,
+      290,
+      360
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "soil",
+     "colors": [
+      {
+       "h": [
+        14,
+        32
+       ],
+       "s": [
+        60,
+        150
+       ],
+       "v": [
+        150,
+        255
+       ]
+      }
+     ],
+     "high_value": "dry",
+     "high_min": 0.25,
+     "low_value": "ok",
+     "low_max": 0.1,
+     "gate_state": "view_greenhouse"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "dry",
+     "name": "Dry",
+     "color": "orange"
+    },
+    {
+     "value": "ok",
+     "name": "Fine",
+     "color": "green"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "daylight",
+   "name": "Day or night",
+   "type": "class",
+   "description": "How bright the sky above the hills is.",
+   "rois": [
+    {
+     "id": "sky",
+     "name": "Sky",
+     "box": [
+      440,
+      55,
+      560,
+      40
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "sky",
+     "colors": [
+      {
+       "h": [
+        0,
+        255
+       ],
+       "s": [
+        0,
+        255
+       ],
+       "v": [
+        110,
+        255
+       ]
+      }
+     ],
+     "high_value": "day",
+     "high_min": 0.6,
+     "low_value": "night",
+     "low_max": 0.2,
+     "gate_state": "view_coop"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "day",
+     "name": "Day",
+     "color": "amber"
+    },
+    {
+     "value": "night",
+     "name": "Night",
+     "color": "indigo"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "door",
+   "name": "Hen house door",
+   "type": "class",
+   "description": "Open: the dark inside and the door swung back. Shut: planks with a Z brace.",
+   "rois": [
+    {
+     "id": "door",
+     "name": "Door",
+     "box": [
+      295,
+      390,
+      150,
+      170
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "template",
+    "params": {
+     "roi": "door",
+     "search": 3,
+     "match_min": 0.6,
+     "margin": 0.05,
+     "gate_state": "view_coop"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "open",
+     "name": "Open",
+     "color": "sky"
+    },
+    {
+     "value": "closed",
+     "name": "Closed",
+     "color": "stone"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "hens_out",
+   "name": "Hens in the run",
+   "type": "class",
+   "description": "White hens anywhere in the fenced run or waiting at the door (by night too: the lamp lights the run a little).",
+   "rois": [
+    {
+     "id": "run",
+     "name": "The run",
+     "box": [
+      480,
+      305,
+      645,
+      370
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "run",
+     "colors": [
+      {
+       "h": [
+        0,
+        255
+       ],
+       "s": [
+        0,
+        40
+       ],
+       "v": [
+        120,
+        255
+       ]
+      }
+     ],
+     "high_value": "yes",
+     "high_min": 0.002,
+     "low_value": "no",
+     "low_max": 0.0008,
+     "gate_state": "view_coop"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "yes",
+     "name": "Yes",
+     "color": "red"
+    },
+    {
+     "value": "no",
+     "name": "No",
+     "color": "green"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "eggs",
+   "name": "Eggs to collect",
+   "type": "class",
+   "description": "Pale eggs on the straw in the three nest boxes: 'time to collect' from four eggs.",
+   "rois": [
+    {
+     "id": "nest",
+     "name": "Nest boxes",
+     "box": [
+      95,
+      330,
+      185,
+      70
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "nest",
+     "colors": [
+      {
+       "h": [
+        0,
+        255
+       ],
+       "s": [
+        0,
+        80
+       ],
+       "v": [
+        120,
+        255
+       ]
+      }
+     ],
+     "high_value": "many",
+     "high_min": 0.1,
+     "low_value": "few",
+     "low_max": 0.09,
+     "gate_state": "view_coop"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "many",
+     "name": "Time to collect",
+     "color": "amber"
+    },
+    {
+     "value": "few",
+     "name": "Not yet",
+     "color": "stone"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  },
+  {
+   "id": "fox",
+   "name": "Fox",
+   "type": "class",
+   "description": "An orange fox outside the fence on the right.",
+   "rois": [
+    {
+     "id": "outside",
+     "name": "Outside the fence (right)",
+     "box": [
+      1135,
+      320,
+      145,
+      290
+     ]
+    }
+   ],
+   "source": {
+    "kind": "rule",
+    "rule": "color_ratio",
+    "params": {
+     "roi": "outside",
+     "colors": [
+      {
+       "h": [
+        5,
+        25
+       ],
+       "s": [
+        150,
+        255
+       ],
+       "v": [
+        80,
+        255
+       ]
+      }
+     ],
+     "high_value": "yes",
+     "high_min": 0.02,
+     "low_value": "no",
+     "low_max": 0.005,
+     "gate_state": "view_coop"
+    }
+   },
+   "judge": "rule",
+   "review": {
+    "enabled": false
+   },
+   "classes": [
+    {
+     "value": "yes",
+     "name": "Yes",
+     "color": "red"
+    },
+    {
+     "value": "no",
+     "name": "No",
+     "color": "green"
+    },
+    {
+     "value": "hidden",
+     "name": "Other camera",
+     "color": "stone"
+    }
+   ]
+  }
+ ]
+}

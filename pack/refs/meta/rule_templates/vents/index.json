@@ -1,0 +1,68 @@
+{
+ "1792718463212.png": {
+  "value": "open",
+  "frame": "sim:greenhouse:10.0:vents=True",
+  "box": [
+   140,
+   105,
+   430,
+   120
+  ],
+  "created": 1792718463.234266
+ },
+ "1792718463260.png": {
+  "value": "closed",
+  "frame": "sim:greenhouse:10.0:vents=False",
+  "box": [
+   140,
+   105,
+   430,
+   120
+  ],
+  "created": 1792718463.2645562
+ },
+ "1792718463289.png": {
+  "value": "open",
+  "frame": "sim:greenhouse:18.2:vents=True",
+  "box": [
+   140,
+   105,
+   430,
+   120
+  ],
+  "created": 1792718463.291963
+ },
+ "1792718463321.png": {
+  "value": "closed",
+  "frame": "sim:greenhouse:18.2:vents=False",
+  "box": [
+   140,
+   105,
+   430,
+   120
+  ],
+  "created": 1792718463.3242092
+ },
+ "1792718463351.png": {
+  "value": "open",
+  "frame": "sim:greenhouse:22.0:vents=True",
+  "box": [
+   140,
+   105,
+   430,
+   120
+  ],
+  "created": 1792718463.3538163
+ },
+ "1792718463378.png": {
+  "value": "closed",
+  "frame": "sim:greenhouse:22.0:vents=False",
+  "box": [
+   140,
+   105,
+   430,
+   120
+  ],
+  "created": 1792718463.381745
+ }
+}
