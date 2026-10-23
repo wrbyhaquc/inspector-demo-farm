@@ -7,7 +7,9 @@ would drive real devices.
 
 English · [繁體中文](README.zh-TW.md)
 
-![The greenhouse and the hen house cameras](docs/preview.png)
+![A heat wave: Inspector opens the roof vents; a dry bed: it waters that bed only; a fox: the alarm; dusk: once every hen is in, it shuts the door](docs/demo.gif)
+
+*Nobody touched anything in this clip: Inspector watched both cameras and ran the equipment through the pack below.*
 
 ## What happens on the farm
 
@@ -41,15 +43,51 @@ python sim/server.py            # http://127.0.0.1:8810/
 Options: `--port`, `--fps` (pictures per second, default 5), `--day-minutes` (real minutes per simulated day),
 `--seed` (the same events every run), `--host` (default 127.0.0.1: only this computer).
 
-## The pack
+## Try it in 10 minutes
 
-What Inspector reads on the two pictures is in `pack/states.json`: the thermometer's digits (a "read digits" rule
-with the digits taught in `pack/refs/`), the vents and the door (reference pictures), each bed's dry soil, the hens,
-the eggs, the fox and the daylight (colour rules). Each camera shows its name tag in the top left corner; the states
-of one camera read "Other camera" on the other's picture, so both cameras share one set of states.
-`tools/check_states.py` checks every state against pictures of every situation the simulator can draw.
+You need [Inspector](https://github.com/wrbyhaquc/inspector) installed (the Runtime is enough: no PyTorch, no model to train; a version that knows script spec 9, from October 2026 on) and this repository.
 
-The complete pack (scripts, an operation panel for the farmer) comes next.
+1. **Start the farm.** `python sim/server.py`, then open http://127.0.0.1:8810/ - the control room. Leave it running.
+2. **Start Inspector.** `start.bat` (or `python -m server`) in the Inspector folder; it opens http://127.0.0.1:8765.
+3. **Install the pack.** **Packs › Install or upgrade**, choose `pack/releases/farm-1.0.0.zip`
+   (`farm-zh-1.0.0.zip` for the Chinese one) and let it become the running pack. Restart Inspector when it asks
+   (the button on that page, or close it and start it again). From a command line instead:
+   `python -m project.pack install pack/releases/farm-1.0.0.zip --activate` in the Inspector folder, then start it.
+4. **Check the cameras.** **Sources** shows *Greenhouse camera* and *Hen house camera*: the pack brings their
+   addresses, so nothing has to be typed. Running the simulator on another computer or port? Change them there.
+5. **Run.** **Run › Start**. The pack has no trained model; every state is judged by screen rules (colours,
+   reference pictures, the thermometer's digits), so it works straight away.
+6. **Open the operation panel** (**Operation panel ↗**, also fine on a phone) and make things happen on the
+   simulator's page:
+   - **Heat wave** - the greenhouse heats up and the roof vents open; once it has cooled down they close again.
+   - **Bed 2 dry** - only bed 2 is watered.
+   - **Fox now** - the alarm sounds and the fox runs off.
+   - **Lay 6 eggs** - the panel says it is time to collect them (once; **Collect** resets it).
+   - **Dusk now** - the hens walk back in; once every hen is inside, the door shuts. **Day now** opens it again.
+
+   The greenhouse buttons sit on the greenhouse camera's row of the panel and the hen house's on its own.
+   **Settings** has the temperatures the vents open and close at; what you change there stays on your computer and
+   survives installing a newer pack.
+
+![The operation panel](docs/panel.png)
+
+## What is in the pack
+
+| | |
+|---|---|
+| Cameras | `GH-CAM` and `COOP-CAM`: the simulator's two streams, declared by the pack (`project.json` "sources") |
+| States | `temperature` (read digits), `vents` and `door` (reference pictures), `bed1_dry` .. `bed3_dry`, `daylight`, `hens_out`, `eggs`, `fox` (colour rules) - `pack/states.json`, with the taught references in `pack/refs/` |
+| One set of states, two cameras | `view_greenhouse` / `view_coop` read each camera's name tag; every other state is gated on one of them, so the greenhouse's states read "Other camera" on the hen house picture and the other way round |
+| Output | `farm`: HTTP `POST` to the simulator's `/api/command` |
+| Main scripts | *Greenhouse keeper* on the greenhouse camera only: too hot → vents open, cooled down → vents closed, a dry bed → water that bed. *Hen house keeper* on the hen house camera only: a fox → the alarm (urgent); night and every hen in → shut the door; day → open it; eggs waiting → tell the farmer once (a variable remembers) |
+| Settings | the temperatures the vents open and close at (30 °C and 24 °C to begin with) |
+| Sub-scripts | vents open / close, water bed 1 / 2 / 3, door open / shut, sound the alarm |
+| Operation panel | both cameras and how they are, each camera's own buttons, stop / resume, what happened, the temperatures, notifications |
+
+`pack/build.py` makes the pack through Inspector's own API (`--lang en` or `zh-TW`), and `python -m project.pack export`
+(in the Inspector folder) turns it into the zip in `pack/releases/`. `tools/teach_refs.py` makes the reference pictures
+from the simulator's drawing; `tools/check_states.py` checks every state against pictures of every situation the
+simulator can draw (1,824 pictures, 21,888 answers, none wrong).
 
 ## License
 
