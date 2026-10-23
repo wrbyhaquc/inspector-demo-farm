@@ -45,14 +45,14 @@ Options: `--port`, `--fps` (pictures per second, default 5), `--day-minutes` (re
 
 ## Try it in 10 minutes
 
-You need [Inspector](https://github.com/wrbyhaquc/inspector) installed (the Runtime is enough: no PyTorch, no model to train; a version that knows script spec 9, from October 2026 on) and this repository.
+You need [Inspector](https://github.com/wrbyhaquc/inspector) installed (the Runtime is enough: no PyTorch, no model to train; a version from 23 October 2026 on, which knows states for some sources only) and this repository.
 
 1. **Start the farm.** `python sim/server.py`, then open http://127.0.0.1:8810/ - the control room. Leave it running.
 2. **Start Inspector.** `start.bat` (or `python -m server`) in the Inspector folder; it opens http://127.0.0.1:8765.
-3. **Install the pack.** **Packs › Install or upgrade**, choose `pack/releases/farm-1.0.0.zip`
-   (`farm-zh-1.0.0.zip` for the Chinese one) and let it become the running pack. Restart Inspector when it asks
+3. **Install the pack.** **Packs › Install or upgrade**, choose `pack/releases/farm-1.0.1.zip`
+   (`farm-zh-1.0.1.zip` for the Chinese one) and let it become the running pack. Restart Inspector when it asks
    (the button on that page, or close it and start it again). From a command line instead:
-   `python -m project.pack install pack/releases/farm-1.0.0.zip --activate` in the Inspector folder, then start it.
+   `python -m project.pack install pack/releases/farm-1.0.1.zip --activate` in the Inspector folder, then start it.
 4. **Check the cameras.** **Sources** shows *Greenhouse camera* and *Hen house camera*: the pack brings their
    addresses, so nothing has to be typed. Running the simulator on another computer or port? Change them there.
 5. **Run.** **Run › Start**. The pack has no trained model; every state is judged by screen rules (colours,
@@ -77,7 +77,7 @@ You need [Inspector](https://github.com/wrbyhaquc/inspector) installed (the Runt
 |---|---|
 | Cameras | `GH-CAM` and `COOP-CAM`: the simulator's two streams, declared by the pack (`project.json` "sources") |
 | States | `temperature` (read digits), `vents` and `door` (reference pictures), `bed1_dry` .. `bed3_dry`, `daylight`, `hens_out`, `eggs`, `fox` (colour rules) - `pack/states.json`, with the taught references in `pack/refs/` |
-| One set of states, two cameras | `view_greenhouse` / `view_coop` read each camera's name tag; every other state is gated on one of them, so the greenhouse's states read "Other camera" on the hen house picture and the other way round |
+| Two cameras, one set of states | each state is for its own camera ("Only on these sources": `GH-CAM` or `COOP-CAM`), so the greenhouse's states are not looked at on the hen house picture and read "Other camera" there, and the other way round |
 | Output | `farm`: HTTP `POST` to the simulator's `/api/command` |
 | Main scripts | *Greenhouse keeper* on the greenhouse camera only: too hot → vents open, cooled down → vents closed, a dry bed → water that bed. *Hen house keeper* on the hen house camera only: a fox → the alarm (urgent); night and every hen in → shut the door; day → open it; eggs waiting → tell the farmer once (a variable remembers) |
 | Settings | the temperatures the vents open and close at (30 °C and 24 °C to begin with) |
@@ -87,7 +87,7 @@ You need [Inspector](https://github.com/wrbyhaquc/inspector) installed (the Runt
 `pack/build.py` makes the pack through Inspector's own API (`--lang en` or `zh-TW`), and `python -m project.pack export`
 (in the Inspector folder) turns it into the zip in `pack/releases/`. `tools/teach_refs.py` makes the reference pictures
 from the simulator's drawing; `tools/check_states.py` checks every state against pictures of every situation the
-simulator can draw (1,824 pictures, 21,888 answers, none wrong).
+simulator can draw (1,824 pictures, 18,240 answers, none wrong).
 
 ## License
 

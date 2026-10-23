@@ -1,128 +1,6 @@
 {
  "states": [
   {
-   "id": "view_greenhouse",
-   "name": "Greenhouse camera",
-   "type": "class",
-   "description": "Is this the greenhouse camera? Its green / purple name tag in the top left corner. The other camera's states are 'Other camera' (hidden) on this picture.",
-   "rois": [
-    {
-     "id": "tag",
-     "name": "Name tag",
-     "box": [
-      20,
-      18,
-      22,
-      22
-     ]
-    }
-   ],
-   "source": {
-    "kind": "rule",
-    "rule": "color_ratio",
-    "params": {
-     "roi": "tag",
-     "colors": [
-      {
-       "h": [
-        85,
-        110
-       ],
-       "s": [
-        150,
-        255
-       ],
-       "v": [
-        150,
-        255
-       ]
-      }
-     ],
-     "high_value": "yes",
-     "high_min": 0.6,
-     "low_value": "hidden",
-     "low_max": 0.1
-    }
-   },
-   "judge": "rule",
-   "review": {
-    "enabled": false
-   },
-   "classes": [
-    {
-     "value": "yes",
-     "name": "Yes",
-     "color": "red"
-    },
-    {
-     "value": "hidden",
-     "name": "Other camera",
-     "color": "stone"
-    }
-   ]
-  },
-  {
-   "id": "view_coop",
-   "name": "Hen house camera",
-   "type": "class",
-   "description": "Is this the hen house camera? Its green / purple name tag in the top left corner. The other camera's states are 'Other camera' (hidden) on this picture.",
-   "rois": [
-    {
-     "id": "tag",
-     "name": "Name tag",
-     "box": [
-      20,
-      18,
-      22,
-      22
-     ]
-    }
-   ],
-   "source": {
-    "kind": "rule",
-    "rule": "color_ratio",
-    "params": {
-     "roi": "tag",
-     "colors": [
-      {
-       "h": [
-        200,
-        225
-       ],
-       "s": [
-        150,
-        255
-       ],
-       "v": [
-        150,
-        255
-       ]
-      }
-     ],
-     "high_value": "yes",
-     "high_min": 0.6,
-     "low_value": "hidden",
-     "low_max": 0.1
-    }
-   },
-   "judge": "rule",
-   "review": {
-    "enabled": false
-   },
-   "classes": [
-    {
-     "value": "yes",
-     "name": "Yes",
-     "color": "red"
-    },
-    {
-     "value": "hidden",
-     "name": "Other camera",
-     "color": "stone"
-    }
-   ]
-  },
-  {
    "id": "temperature",
    "name": "Greenhouse temperature",
    "type": "number",
@@ -160,8 +38,7 @@
        ]
       }
      ],
-     "part": "all",
-     "gate_state": "view_greenhouse"
+     "part": "all"
     }
    },
    "judge": "rule",
@@ -170,7 +47,10 @@
    },
    "min": 0,
    "max": 60,
-   "unit": "°C"
+   "unit": "°C",
+   "sources": [
+    "GH-CAM"
+   ]
   },
   {
    "id": "vents",
@@ -196,8 +76,7 @@
      "roi": "vent",
      "search": 3,
      "match_min": 0.6,
-     "margin": 0.05,
-     "gate_state": "view_greenhouse"
+     "margin": 0.05
     }
    },
    "judge": "rule",
@@ -220,6 +99,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "GH-CAM"
    ]
   },
   {
@@ -263,8 +145,7 @@
      "high_value": "dry",
      "high_min": 0.25,
      "low_value": "ok",
-     "low_max": 0.1,
-     "gate_state": "view_greenhouse"
+     "low_max": 0.1
     }
    },
    "judge": "rule",
@@ -287,6 +168,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "GH-CAM"
    ]
   },
   {
@@ -330,8 +214,7 @@
      "high_value": "dry",
      "high_min": 0.25,
      "low_value": "ok",
-     "low_max": 0.1,
-     "gate_state": "view_greenhouse"
+     "low_max": 0.1
     }
    },
    "judge": "rule",
@@ -354,6 +237,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "GH-CAM"
    ]
   },
   {
@@ -397,8 +283,7 @@
      "high_value": "dry",
      "high_min": 0.25,
      "low_value": "ok",
-     "low_max": 0.1,
-     "gate_state": "view_greenhouse"
+     "low_max": 0.1
     }
    },
    "judge": "rule",
@@ -421,6 +306,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "GH-CAM"
    ]
   },
   {
@@ -464,8 +352,7 @@
      "high_value": "day",
      "high_min": 0.6,
      "low_value": "night",
-     "low_max": 0.2,
-     "gate_state": "view_coop"
+     "low_max": 0.2
     }
    },
    "judge": "rule",
@@ -488,6 +375,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "COOP-CAM"
    ]
   },
   {
@@ -514,8 +404,7 @@
      "roi": "door",
      "search": 3,
      "match_min": 0.6,
-     "margin": 0.05,
-     "gate_state": "view_coop"
+     "margin": 0.05
     }
    },
    "judge": "rule",
@@ -538,6 +427,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "COOP-CAM"
    ]
   },
   {
@@ -581,8 +473,7 @@
      "high_value": "yes",
      "high_min": 0.002,
      "low_value": "no",
-     "low_max": 0.0008,
-     "gate_state": "view_coop"
+     "low_max": 0.0008
     }
    },
    "judge": "rule",
@@ -605,6 +496,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "COOP-CAM"
    ]
   },
   {
@@ -648,8 +542,7 @@
      "high_value": "many",
      "high_min": 0.1,
      "low_value": "few",
-     "low_max": 0.09,
-     "gate_state": "view_coop"
+     "low_max": 0.09
     }
    },
    "judge": "rule",
@@ -672,6 +565,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "COOP-CAM"
    ]
   },
   {
@@ -715,8 +611,7 @@
      "high_value": "yes",
      "high_min": 0.02,
      "low_value": "no",
-     "low_max": 0.005,
-     "gate_state": "view_coop"
+     "low_max": 0.005
     }
    },
    "judge": "rule",
@@ -739,6 +634,9 @@
      "name": "Other camera",
      "color": "stone"
     }
+   ],
+   "sources": [
+    "COOP-CAM"
    ]
   }
  ]

@@ -42,13 +42,13 @@ python sim/server.py            # http://127.0.0.1:8810/
 
 ## 10 分鐘試用
 
-需要先裝好 [Inspector](https://github.com/wrbyhaquc/inspector)(Runtime 版就夠:不用 PyTorch,也不用訓練模型;要認得腳本規範第 9 版,2026 年 10 月以後的版本),再加上這個 repo。
+需要先裝好 [Inspector](https://github.com/wrbyhaquc/inspector)(Runtime 版就夠:不用 PyTorch,也不用訓練模型;要 2026 年 10 月 23 日以後、認得「狀態只用在某些來源」的版本),再加上這個 repo。
 
 1. **啟動農場。** `python sim/server.py`,打開 http://127.0.0.1:8810/ 監控室。讓它一直開著。
 2. **啟動 Inspector。** 在 Inspector 資料夾執行 `start.bat`(或 `python -m server`),會打開 http://127.0.0.1:8765。
-3. **安裝方案包。** **方案包 › 安裝或升級**,選 `pack/releases/farm-zh-1.0.0.zip`(英文版是 `farm-1.0.0.zip`),
+3. **安裝方案包。** **方案包 › 安裝或升級**,選 `pack/releases/farm-zh-1.0.1.zip`(英文版是 `farm-1.0.1.zip`),
    並設成執行中的方案包。依提示重新啟動 Inspector(用那一頁的按鈕,或關掉再開)。
-   也可以用指令:在 Inspector 資料夾執行 `python -m project.pack install pack/releases/farm-zh-1.0.0.zip --activate`,再啟動。
+   也可以用指令:在 Inspector 資料夾執行 `python -m project.pack install pack/releases/farm-zh-1.0.1.zip --activate`,再啟動。
 4. **確認攝影機。** **來源** 頁會有「溫室攝影機」和「雞舍攝影機」:方案包已經帶好位址,不用自己輸入。
    模擬器在別台電腦或別的連接埠?在那裡改位址就好。
 5. **開始執行。** **執行 › 開始**。這個方案包沒有訓練好的模型,每個狀態都用畫面規則(顏色、參考圖、溫度計的數字)判斷,所以馬上就能用。
@@ -70,7 +70,7 @@ python sim/server.py            # http://127.0.0.1:8810/
 |---|---|
 | 攝影機 | `GH-CAM` 和 `COOP-CAM`:模擬器的兩個串流,由方案包宣告(`project.json` 的 "sources") |
 | 狀態 | `temperature`(讀數字)、`vents` 和 `door`(參考圖比對)、`bed1_dry` ~ `bed3_dry`、`daylight`、`hens_out`、`eggs`、`fox`(顏色比例):`pack/states.json`,教好的參考圖在 `pack/refs/` |
-| 兩台攝影機共用一套狀態 | `view_greenhouse` / `view_coop` 看每台攝影機的名稱標籤;其他狀態都以其中一個當閘門,所以溫室的狀態在雞舍畫面上是「另一台攝影機」,反過來也一樣 |
+| 兩台攝影機共用一套狀態 | 每個狀態都設定只用在自己的攝影機(「只用在這些來源」:`GH-CAM` 或 `COOP-CAM`),所以溫室的狀態在雞舍畫面上不看,顯示「另一台攝影機」,反過來也一樣 |
 | 輸出 | `farm`:以 HTTP `POST` 送到模擬器的 `/api/command` |
 | 主腳本 | 「溫室管家」只在溫室攝影機:太熱 → 開通風窗,降溫 → 關通風窗,某一畦乾了 → 澆那一畦。「雞舍管家」只在雞舍攝影機:狐狸 → 響警報(緊急);晚上雞都進去了 → 關門;白天 → 開門;有蛋 → 通知一次(用變數記住) |
 | 使用者設定 | 通風窗開、關的溫度(一開始是 30 °C 和 24 °C) |
@@ -78,7 +78,7 @@ python sim/server.py            # http://127.0.0.1:8810/
 | 操作面板 | 兩台攝影機的現況、各自的設備按鈕、停下來 / 繼續、最近發生的事、溫度設定、通知 |
 
 `pack/build.py` 透過 Inspector 自己的 API 做出這個方案包(`--lang en` 或 `zh-TW`),再用 `python -m project.pack export`(在 Inspector 資料夾)變成 `pack/releases/` 裡的 zip。
-`tools/teach_refs.py` 用模擬器的畫面產生參考圖;`tools/check_states.py` 用模擬器能畫出的每一種狀況檢查每個狀態(1,824 張畫面、21,888 個答案,沒有錯)。
+`tools/teach_refs.py` 用模擬器的畫面產生參考圖;`tools/check_states.py` 用模擬器能畫出的每一種狀況檢查每個狀態(1,824 張畫面、18,240 個答案,沒有錯)。
 
 ## 授權
 

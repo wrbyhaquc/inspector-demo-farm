@@ -6,8 +6,9 @@ when it is saved), in English or Traditional Chinese.
 
 What it makes (the ids are the same in both languages; only the words differ):
   sources       GH-CAM and COOP-CAM: the simulator's two camera streams (project.json "sources")
-  states        pack/states.json - twelve states, all judged by screen rules (no training needed); the references
-                they need (the vents, the door, the thermometer's digits) come from pack/refs/
+  states        pack/states.json - ten states, all judged by screen rules (no training needed), each for its own
+                camera ("sources": GH-CAM or COOP-CAM); the references they need (the vents, the door, the
+                thermometer's digits) come from pack/refs/
   output        "farm": the simulator's equipment (HTTP POST to its /api/command)
   settings      vents_open_above / vents_close_below: the greenhouse temperatures (the farmer sets them)
   variable      eggs_told: the farmer has been told about the eggs
@@ -32,9 +33,7 @@ T = {
     "en": {
         "project": ("Small farm", "A greenhouse and a hen house, one camera each: roof vents, sprinklers, the hen house door and a fox alarm driven through an HTTP output.",
                     {"device": "camera", "item": "item"}),
-        "states": {"view_greenhouse": ("Greenhouse camera", "Is this the greenhouse camera? Its green name tag in the top left corner. The hen house's states read 'Other camera' on this picture.", {"yes": "Yes", "hidden": "Other camera"}, "Name tag"),
-                   "view_coop": ("Hen house camera", "Is this the hen house camera? Its purple name tag in the top left corner. The greenhouse's states read 'Other camera' on this picture.", {"yes": "Yes", "hidden": "Other camera"}, "Name tag"),
-                   "temperature": ("Greenhouse temperature", "The red digits on the wall display, in °C.", {}, "Thermometer digits"),
+        "states": {"temperature": ("Greenhouse temperature", "The red digits on the wall display, in °C.", {}, "Thermometer digits"),
                    "vents": ("Roof vents", "Open: the glass pane is lifted on its arm and a dark gap shows. Closed: the pane lies flat.", {"open": "Open", "closed": "Closed", "hidden": "Other camera"}, "Left roof vent"),
                    "bed1_dry": ("Bed 1 dry", "Pale, dry soil showing between the plants of bed 1.", {"dry": "Dry", "ok": "Fine", "hidden": "Other camera"}, "Bed 1 soil"),
                    "bed2_dry": ("Bed 2 dry", "Pale, dry soil showing between the plants of bed 2.", {"dry": "Dry", "ok": "Fine", "hidden": "Other camera"}, "Bed 2 soil"),
@@ -79,9 +78,7 @@ T = {
     },
     "zh-TW": {
         "project": ("小農場", "一間溫室和一間雞舍,各一台攝影機:屋頂通風窗、灑水器、雞舍門和驅狐警報透過 HTTP 輸出控制。", {"device": "攝影機", "item": "項目"}),
-        "states": {"view_greenhouse": ("溫室攝影機", "這是溫室攝影機嗎?看左上角綠色的名稱標籤。雞舍的狀態在這個畫面上會是「另一台攝影機」。", {"yes": "是", "hidden": "另一台攝影機"}, "名稱標籤"),
-                   "view_coop": ("雞舍攝影機", "這是雞舍攝影機嗎?看左上角紫色的名稱標籤。溫室的狀態在這個畫面上會是「另一台攝影機」。", {"yes": "是", "hidden": "另一台攝影機"}, "名稱標籤"),
-                   "temperature": ("溫室溫度", "牆上顯示器的紅色數字,單位 °C。", {}, "溫度計數字"),
+        "states": {"temperature": ("溫室溫度", "牆上顯示器的紅色數字,單位 °C。", {}, "溫度計數字"),
                    "vents": ("屋頂通風窗", "開:玻璃窗被支架撐起,露出暗色的縫。關:窗平貼在屋頂上。", {"open": "開著", "closed": "關著", "hidden": "另一台攝影機"}, "左邊的通風窗"),
                    "bed1_dry": ("第 1 畦乾了", "第 1 畦的菜之間露出淺色的乾土。", {"dry": "乾了", "ok": "正常", "hidden": "另一台攝影機"}, "第 1 畦的土"),
                    "bed2_dry": ("第 2 畦乾了", "第 2 畦的菜之間露出淺色的乾土。", {"dry": "乾了", "ok": "正常", "hidden": "另一台攝影機"}, "第 2 畦的土"),

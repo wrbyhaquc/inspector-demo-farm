@@ -1,5 +1,6 @@
 """Every combination the farm can show, several moments each: does every state of the pack answer what the simulator
-knows - and say "other camera" (hidden) on the other camera's picture?   python tools/check_states.py
+knows on its own camera - and is it "other camera" (hidden, not looked at) on the other one?
+python tools/check_states.py
 (run tools/teach_refs.py first: the vents, the door and the thermometer need their references)"""
 import itertools
 import json
@@ -14,6 +15,7 @@ import numpy as np  # noqa: E402
 
 import farm as F  # noqa: E402
 from labeler import generic  # noqa: E402
+import schema as schema_mod  # noqa: E402
 
 REFS = os.path.join(HERE, "..", "pack", "refs")
 schema = json.load(open(os.path.join(HERE, "..", "pack", "states.json"), encoding="utf-8"))
@@ -25,9 +27,10 @@ F.time = types.SimpleNamespace(time=lambda: clock[0])         # the simulator's 
 total = bad = 0
 
 
-def check(img, want, what):
+def check(img, want, what, cam):
     global total, bad
     values, scores, _flags = engine.label(img, {})
+    values.update(schema_mod.not_here(schema["states"], cam, expand=lambda keys: keys))   # as the runner does
     for sid, w in want.items():
         total += 1
         ok = values[sid] in w if isinstance(w, tuple) else values[sid] == w
@@ -46,11 +49,10 @@ for hour, vents, temp, moist, water in itertools.product((10.0, 14.0, 18.2, 22.0
     f.hour, f.vents, f.temp, f.moist = hour, vents, float(temp), [float(m) for m in moist]
     if water is not None:
         f.watering[water] = clock[0] + 5
-    want = {"view_greenhouse": "yes", "view_coop": "hidden", "temperature": temp, "vents": "open" if vents else "closed",
-            **{c: "hidden" for c in COOP}}
+    want = {"temperature": temp, "vents": "open" if vents else "closed", **{c: "hidden" for c in COOP}}
     for i, m in enumerate(moist):
         want[f"bed{i + 1}_dry"] = "dry" if m < 26 and water != i else ("ok" if m > 34 else ("dry", "ok", None))
-    check(np.asarray(f.draw("greenhouse")), want, dict(hour=hour, vents=vents, temp=temp, moist=moist, water=water))
+    check(np.asarray(f.draw("greenhouse")), want, dict(hour=hour, vents=vents, temp=temp, moist=moist, water=water), "GH-CAM")
 
 for hour, door, out, eggs, fox, alarm in itertools.product((7.0, 10.0, 15.0, 18.2, 22.0, 3.0), (True, False), (0, 1, 3, 8),
                                                           (0, 2, 3, 4, 5, 9, 12), (False, True), (False, True)):
@@ -66,9 +68,9 @@ for hour, door, out, eggs, fox, alarm in itertools.product((7.0, 10.0, 15.0, 18.
         f.come_fox(called=True)
     if alarm:
         f.alarm_until = clock[0] + 4
-    want = {"view_greenhouse": "hidden", "view_coop": "yes", "door": "open" if door else "closed",
+    want = {"door": "open" if door else "closed",
             "hens_out": "yes" if out else "no", "eggs": "many" if eggs >= 4 else "few",
             "fox": "yes" if fox else "no", "temperature": None, **{s: "hidden" for s in GREENHOUSE if s != "temperature"}}
     want["daylight"] = "day" if 9 <= hour <= 16 else ("night" if hour >= 19 or hour < 5 else ("day", "night", None))
-    check(np.asarray(f.draw("coop")), want, dict(hour=hour, door=door, out=out, eggs=eggs, fox=fox, alarm=alarm))
+    check(np.asarray(f.draw("coop")), want, dict(hour=hour, door=door, out=out, eggs=eggs, fox=fox, alarm=alarm), "COOP-CAM")
 print(f"{n} pictures, checked {total}, wrong {bad}")
